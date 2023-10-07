@@ -21,12 +21,12 @@ jobs:
       run: |
         mv target/release/base64-converter base64-converter
         chmod 777 base64-converter
-        tar cpfz base64-converter.tar.gz base64-converter assets
+        tar cpfz base64-converter_linux_x86_64.tar.gz base64-converter assets
         
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: base64-converter.tar.gz
+        files: base64-converter_linux_x86_64.tar.gz
 
   macos_build:
     runs-on: macos-latest
@@ -48,12 +48,12 @@ jobs:
       run: |
         mv target/release/base64-converter base64-converter
         chmod 777 base64-converter
-        tar cpfz base64-converter.tar.gz base64-converter
+        tar cpfz base64-converter_Darwin_x86_64.tar.gz base64-converter
         
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: base64-converter.tar.gz
+        files: base64-converter_Darwin_x86_64.tar.gz
 
   win_build:
     runs-on: windows-latest
@@ -73,9 +73,9 @@ jobs:
     - shell: bash
       run: |
         mv target/release/base64-converter base64-converter
-        7z a base64-converter.zip base64-converter.exe assets
+        7z a base64-converter_windows_x86_64.zip base64-converter.exe assets
         
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: base64-converter.zip
+        files: base64-converter_windows_x86_64.zip
