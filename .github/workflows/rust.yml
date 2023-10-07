@@ -1,0 +1,81 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  linux_build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Prep
+      run: sudo apt-get install libasound-dev -y
+      
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release
+
+    - shell: bash
+      run: |
+        mv target/release/base64-converter base64-converter
+        chmod 777 base64-converter
+        tar cpfz base64-converter.tar.gz base64-converter assets
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: base64-converter.tar.gz
+
+  macos_build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Install rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        target: x86_64-apple-darwin
+        default: true
+        override: true
+
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release
+
+    - shell: bash
+      run: |
+        mv target/release/base64-converter base64-converter
+        chmod 777 base64-converter
+        tar cpfz base64-converter.tar.gz base64-converter
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: base64-converter.tar.gz
+
+  win_build:
+    runs-on: windows-latest
+    steps:
+    - name: Install rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        target: x86_64-pc-windows-msvc
+        override: true
+
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release
+
+    - shell: bash
+      run: |
+        mv target/release/base64-converter base64-converter
+        7z a base64-converter.zip base64-converter.exe assets
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: base64-converter.zip
