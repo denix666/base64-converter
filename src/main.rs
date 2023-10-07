@@ -20,6 +20,7 @@ fn main() {
     let mut encrypted_content = String::new();
 
     eframe::run_simple_native(&title, options, move |ctx, _frame| {
+        ctx.set_visuals(egui::Visuals::dark());
         egui::CentralPanel::default().show(&ctx, |ui| {
             ui.vertical(|ui| {
                 ui.group(|ui| {
